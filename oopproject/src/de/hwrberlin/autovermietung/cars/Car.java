@@ -1,9 +1,9 @@
-package me.yaamfighter.autovermietung.cars;
+package de.hwrberlin.autovermietung.cars;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yaamfighter.autovermietung.humans.Human;
+import de.hwrberlin.autovermietung.humans.Human;
 
 public class Car {
 

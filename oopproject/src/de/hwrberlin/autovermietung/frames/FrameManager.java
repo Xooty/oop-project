@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.frames;
+package de.hwrberlin.autovermietung.frames;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.frames;
+package de.hwrberlin.autovermietung.frames;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import me.yaamfighter.autovermietung.Main;
+import de.hwrberlin.autovermietung.Main;
 
 public abstract class MainFrame extends JFrame implements ActionListener {
 

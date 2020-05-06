@@ -1,7 +1,7 @@
-package me.yaamfighter.autovermietung.contract;
+package de.hwrberlin.autovermietung.contract;
 
-import me.yaamfighter.autovermietung.cars.Car;
-import me.yaamfighter.autovermietung.humans.Human;
+import de.hwrberlin.autovermietung.cars.Car;
+import de.hwrberlin.autovermietung.humans.Human;
 
 public class Contract {
 

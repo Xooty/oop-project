@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.humans;
+package de.hwrberlin.autovermietung.humans;
 
 public class Human {
 

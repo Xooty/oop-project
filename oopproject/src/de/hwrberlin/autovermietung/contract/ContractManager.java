@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.contract;
+package de.hwrberlin.autovermietung.contract;
 
 import java.util.ArrayList;
 import java.util.List;

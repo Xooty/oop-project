@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.cars;
+package de.hwrberlin.autovermietung.cars;
 
 public enum CarType {
 

@@ -1,8 +1,8 @@
-package me.yaamfighter.autovermietung;
+package de.hwrberlin.autovermietung;
 
-import me.yaamfighter.autovermietung.cars.CarManager;
-import me.yaamfighter.autovermietung.frames.FrameManager;
-import me.yaamfighter.autovermietung.mysql.DBController;
+import de.hwrberlin.autovermietung.cars.CarManager;
+import de.hwrberlin.autovermietung.frames.FrameManager;
+import de.hwrberlin.autovermietung.mysql.DBController;
 
 public class Main {
 
@@ -17,9 +17,9 @@ public class Main {
 		
 		frame_manager = new FrameManager();
 		
-		dbc = DBController.getInstance();
-        dbc.openConnection();
-        dbc.initTables();
+//		dbc = DBController.getInstance();
+//        dbc.openConnection();
+//        dbc.initTables();
 	}
 	
 	public static CarManager getCarManager() {

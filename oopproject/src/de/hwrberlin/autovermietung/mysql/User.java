@@ -1,4 +1,4 @@
-package me.yaamfighter.autovermietung.mysql;
+package de.hwrberlin.autovermietung.mysql;
 
 import java.sql.Connection;
 
