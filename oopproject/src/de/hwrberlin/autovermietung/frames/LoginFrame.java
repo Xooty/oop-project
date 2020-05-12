@@ -14,6 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import de.hwrberlin.autovermietung.Main;
+import de.hwrberlin.autovermietung.users.User;
 
 public class LoginFrame extends MainFrame {
 
@@ -47,21 +48,26 @@ public class LoginFrame extends MainFrame {
 				sb.append(c);
 			}
 			
-//			Main.getFrameManager().openFrameByID(1);
+			User user = this.login(this.textfield_login_user.getText(), sb.toString());
+			
+			if (user != null) {
+				JOptionPane.showMessageDialog(null, "Sie haben sich erfolgreich als " + user.getUserName() + " angemeldet. Berechtigungsstufe: " + user.getPermission());
+				Main.getFrameManager().openFrameByID(1);
+			} else {
+				JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht. Bitte überprüfen Sie die Schreibweise.");
+			}
 		}
 	}
 	
 	public JPanel getLoginPanel(int x, int y, int width, int height) {
 		
-		this.button_login = new JButton("Login");
+		this.button_login = new JButton("Anmelden");
 		
 		this.label_login_user = new JLabel("User");
 		this.label_login_password = new JLabel("Passwort");
 		
 		this.textfield_login_user = new JTextField();
-		this.textfield_login_user.setSize(200, 25);
 		this.passwordfield_login_password = new JPasswordField();
-		this.passwordfield_login_password.setSize(200, 25);
 
 		/////////////////////////////////////////////////////
 		
@@ -71,9 +77,7 @@ public class LoginFrame extends MainFrame {
 		
 		JPanel panel = new JPanel();
 		
-		panel.setSize(width, height);
-		panel.setLocation(x, y);
-		
+		panel.setBounds(x, y, width, height);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBorder(BorderFactory.createEmptyBorder(50, 100, 100, 100));
 		
@@ -90,5 +94,12 @@ public class LoginFrame extends MainFrame {
 		panel.add(this.button_login);
 		
 		return panel;
+	}
+	
+	public User login(String user_name, String user_password) {
+		for (User user : Main.getUserManager().getUsers()) {
+			if (user.getUserName().equals(user_name) && user.getUserPassword().equals(user_password)) return user;
+		}
+		return null;
 	}
 }

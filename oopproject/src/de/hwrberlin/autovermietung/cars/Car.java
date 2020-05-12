@@ -31,11 +31,15 @@ public class Car {
 	private Human current_human;
 	private List<Human> previous_humans;
 	
+	private boolean occupied;
+	
 	public Car() {
 		this.damages = new ArrayList<String>();
 		
 		this.current_human = null;
 		this.previous_humans = new ArrayList<Human>();
+		
+		this.occupied = false;
 	}
 	
 	public CarBrand getCarBrand() {
@@ -175,5 +179,13 @@ public class Car {
 	
 	public void removePreviousHuman(Human human) {
 		this.previous_humans.remove(human);
+	}
+	
+	public boolean isOccupied() {
+		return this.occupied;
+	}
+	
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
 	}
 }

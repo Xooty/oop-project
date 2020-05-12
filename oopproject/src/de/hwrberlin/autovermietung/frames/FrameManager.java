@@ -67,6 +67,7 @@ public class FrameManager {
 	
 	public void setupFrames() {
 		this.addFrame(new LoginFrame());
+		this.addFrame(new MenuFrame());
 		this.addFrame(new ContractFrame());
 		this.addFrame(new CarFrame());
 	}
