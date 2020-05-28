@@ -59,16 +59,18 @@ public class FrameManager {
 			this.current_frame.setVisible(false);
 			this.setCurrentFrame(frame);
 			frame.setVisible(true);
-			
+			if (id != 0) frame.setMenuBar();
 			return frame;
 		}
 		return null;
 	}
 	
 	public void setupFrames() {
+		this.frames.clear();
 		this.addFrame(new LoginFrame());
 		this.addFrame(new MenuFrame());
 		this.addFrame(new ContractFrame());
 		this.addFrame(new CarFrame());
+		this.addFrame(new CalendarFrame());
 	}
 }

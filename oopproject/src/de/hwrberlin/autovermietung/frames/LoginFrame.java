@@ -37,27 +37,6 @@ public class LoginFrame extends MainFrame {
 		
 		this.add(new JLabel());
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == this.button_login) {
-			char[] password = this.passwordfield_login_password.getPassword();
-			StringBuilder sb = new StringBuilder();
-			
-			for (char c : password) {
-				sb.append(c);
-			}
-			
-			User user = this.login(this.textfield_login_user.getText(), sb.toString());
-			
-			if (user != null) {
-				JOptionPane.showMessageDialog(null, "Sie haben sich erfolgreich als " + user.getUserName() + " angemeldet. Berechtigungsstufe: " + user.getPermission());
-				Main.getFrameManager().openFrameByID(1);
-			} else {
-				JOptionPane.showMessageDialog(null, "Dieser Benutzer existiert nicht. Bitte überprüfen Sie die Schreibweise.");
-			}
-		}
-	}
 	
 	public JPanel getLoginPanel(int x, int y, int width, int height) {
 		
@@ -101,5 +80,26 @@ public class LoginFrame extends MainFrame {
 			if (user.getUserName().equals(user_name) && user.getUserPassword().equals(user_password)) return user;
 		}
 		return null;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource() == this.button_login) {
+			char[] password = this.passwordfield_login_password.getPassword();
+			StringBuilder sb = new StringBuilder();
+			
+			for (char c : password) {
+				sb.append(c);
+			}
+			
+			User user = this.login(this.textfield_login_user.getText(), sb.toString());
+			
+			if (user != null) {
+				JOptionPane.showMessageDialog(null, "Sie haben sich erfolgreich als " + user.getUserName() + " angemeldet. Berechtigungsstufe: " + user.getPermission());
+				Main.getFrameManager().openFrameByID(1);
+			} else {
+				JOptionPane.showMessageDialog(null, "Der Benutzername oder das Passwort stimmen nicht. Bitte überprüfen Sie die Schreibweise.");
+			}
+		}
 	}
 }
