@@ -2,8 +2,7 @@ package de.hwrberlin.autovermietung;
 
 import de.hwrberlin.autovermietung.cars.CarManager;
 import de.hwrberlin.autovermietung.frames.FrameManager;
-import de.hwrberlin.autovermietung.mysql.DBController;
-import de.hwrberlin.autovermietung.users.UserManager;
+import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class Main {
 
@@ -11,20 +10,14 @@ public class Main {
 	
 	public static FrameManager frame_manager;
 	
-	public static UserManager user_manager;
-	
-	public static DBController dbc;
+	public static MySQL mysql;
 	
 	public static void main(String[] args) {
 		car_manager = new CarManager();
 		
 		frame_manager = new FrameManager();
 		
-		user_manager = new UserManager();
-		
-//		dbc = DBController.getInstance();
-//        dbc.openConnection();
-//        dbc.initTables();
+		mysql = new MySQL(System.getProperty("user.home") + "/Desktop/Autovermietung/");
 	}
 	
 	public static CarManager getCarManager() {
@@ -35,11 +28,7 @@ public class Main {
 		return frame_manager;
 	}
 	
-	public static UserManager getUserManager() {
-		return user_manager;
-	}
-	
-	public static DBController getDBController() {
-		return dbc;
+	public static MySQL getMySQL() {
+		return mysql;
 	}
 }

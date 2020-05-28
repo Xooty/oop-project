@@ -1,13 +1,13 @@
 package de.hwrberlin.autovermietung.contract;
 
 import de.hwrberlin.autovermietung.cars.Car;
-import de.hwrberlin.autovermietung.humans.Human;
+import de.hwrberlin.autovermietung.customers.Customer;
 
 public class Contract {
 
 	private int id;
 	
-	private Human human;
+	private Customer human;
 	
 	private Car car;
 	
@@ -17,7 +17,7 @@ public class Contract {
 	
 	private boolean insurance;
 	
-	public Contract(int id, Human human, Car car) {
+	public Contract(int id, Customer human, Car car) {
 		this.id = id;
 		
 		this.human = human;
@@ -29,7 +29,7 @@ public class Contract {
 		return this.id;
 	}
 	
-	public Human getHuman() {
+	public Customer getHuman() {
 		return this.human;
 	}
 	

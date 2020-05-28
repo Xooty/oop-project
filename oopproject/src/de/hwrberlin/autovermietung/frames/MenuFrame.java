@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.cars.Car;
+import de.hwrberlin.autovermietung.users.Permission;
 
 public class MenuFrame extends MainFrame {
 
@@ -17,10 +18,10 @@ public class MenuFrame extends MainFrame {
 
 	private JComboBox<Object> combobox_cars;
 	
-	private JButton button_select, button_calendar;
+	private JButton button_select, button_calendar, button_change_password;
 	
 	public MenuFrame() {
-		super(1, "Hauptmenü", 600, 600);
+		super(1, Permission.ADMIN, "Hauptmenü", 600, 600);
 		
 		List<String> cars = new ArrayList<String>();
 		
@@ -39,10 +40,15 @@ public class MenuFrame extends MainFrame {
 		this.button_calendar = new JButton("Kalendar");
 		this.button_calendar.setBounds(300, 500, 250, 25);
 		this.button_calendar.addActionListener(this);
+		
+		this.button_change_password = new JButton("Passwort ändern");
+		this.button_change_password.setBounds(100, 100, 250, 25);
+		this.button_change_password.addActionListener(this);
 				
 		this.add(this.combobox_cars);
 		this.add(this.button_select);
 		this.add(this.button_calendar);
+		this.add(this.button_change_password);
 		
 		this.add(new JLabel());
 	}
@@ -50,10 +56,12 @@ public class MenuFrame extends MainFrame {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == this.button_select) {
-			CarFrame frame = (CarFrame) Main.getFrameManager().openFrameByID(3);
+			CarFrame frame = (CarFrame) Main.getFrameManager().openFrameByID(102);
 			frame.setCar(Main.getCarManager().getCarByName(this.combobox_cars.getSelectedItem().toString()));
 		} else if (event.getSource() == this.button_calendar) {
-			Main.getFrameManager().openFrameByID(4);
+			Main.getFrameManager().openFrameByID(3);
+		} else if (event.getSource() == this.button_change_password) {
+			Main.getMySQL().getUser().setUserPassword("123456");
 		}
 	}
 }

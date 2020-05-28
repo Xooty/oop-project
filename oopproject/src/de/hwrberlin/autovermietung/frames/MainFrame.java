@@ -14,17 +14,22 @@ import javax.swing.KeyStroke;
 
 import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.listeners.MenuActionListener;
+import de.hwrberlin.autovermietung.users.Permission;
 
 public abstract class MainFrame extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 8255617560086790573L;
 
 	private int id;
+	
+	private Permission permission;
 
 	private JMenuBar menubar_main;
 	
-	public MainFrame(int id, String title, int width, int height) {
+	public MainFrame(int id, Permission permission, String title, int width, int height) {
 		this.id = id;
+		
+		this.permission = permission;
 
 		this.setTitle(title);
 		
@@ -40,6 +45,10 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 	
 	public int getID() {
 		return this.id;
+	}
+	
+	public Permission getPermission() {
+		return this.permission;
 	}
 	
 	public Dimension getRealSize() {
@@ -74,9 +83,10 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		menu_item_close.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				for (MainFrame frame : Main.getFrameManager().getFrames()) {
-					frame.dispose();
-				}
+//				for (MainFrame frame : Main.getFrameManager().getFrames()) {
+//					frame.dispose();
+//				}
+				System.exit(0);
 			}
 		});
 		first_menu.add(menu_item_close);
@@ -88,10 +98,12 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		menu.getAccessibleContext().setAccessibleDescription("Text");
 		
 		for (MainFrame frame : Main.getFrameManager().getFrames()) {
-			if (frame.getID() == 0 || frame.getID() == this.id || frame.getID() == 3) continue;
-			JMenuItem item = new JMenuItem(frame.getTitle() + " anzeigen");
-			item.addActionListener(new MenuActionListener());
-			menu.add(item);
+			if (frame.getID() == 0 || frame.getID() == this.id || frame.getID() == 102) continue;
+			if (Main.getMySQL().getUser().hasPermission(frame.getPermission())) {
+				JMenuItem item = new JMenuItem(frame.getTitle() + " anzeigen");
+				item.addActionListener(new MenuActionListener());
+				menu.add(item);
+			}
 		}
 		
 //		JMenuItem item_contract = new JMenuItem("Aufträge anzeigen");

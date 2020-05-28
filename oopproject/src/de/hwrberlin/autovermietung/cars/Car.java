@@ -3,7 +3,8 @@ package de.hwrberlin.autovermietung.cars;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hwrberlin.autovermietung.humans.Human;
+import de.hwrberlin.autovermietung.contract.Contract;
+import de.hwrberlin.autovermietung.customers.Customer;
 
 public class Car {
 
@@ -28,18 +29,22 @@ public class Car {
 	
 	private List<String> damages;
 	
-	private Human current_human;
-	private List<Human> previous_humans;
+	private Customer current_customer;
+	private List<Customer> previous_customers;
 	
 	private boolean occupied;
+	
+	private List<Contract> contracts;
 	
 	public Car() {
 		this.damages = new ArrayList<String>();
 		
-		this.current_human = null;
-		this.previous_humans = new ArrayList<Human>();
+		this.current_customer = null;
+		this.previous_customers = new ArrayList<Customer>();
 		
 		this.occupied = false;
+		
+		this.contracts = new ArrayList<Contract>();
 	}
 	
 	public CarBrand getCarBrand() {
@@ -161,24 +166,24 @@ public class Car {
 		this.damages.remove(damage);
 	}
 	
-	public Human getCurrentHuman() {
-		return this.current_human;
+	public Customer getCurrentCustomer() {
+		return this.current_customer;
 	}
 	
-	public void setCurrentHuman(Human current_human) {
-		this.current_human = current_human;
+	public void setCurrentCustomer(Customer current_customer) {
+		this.current_customer = current_customer;
 	}
 	
-	public List<Human> getPreviousHumans() {
-		return this.previous_humans;
+	public List<Customer> getPreviousCustomers() {
+		return this.previous_customers;
 	}
 	
-	public void addPreviousHuman(Human human) {
-		this.previous_humans.add(human);
+	public void addPreviousCustomer(Customer customer) {
+		this.previous_customers.add(customer);
 	}
 	
-	public void removePreviousHuman(Human human) {
-		this.previous_humans.remove(human);
+	public void removePreviousHuman(Customer customer) {
+		this.previous_customers.remove(customer);
 	}
 	
 	public boolean isOccupied() {
@@ -187,5 +192,21 @@ public class Car {
 	
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
+	}
+	
+	public List<Contract> getContracts() { 
+		return this.contracts;
+	}
+	
+	public void setContracts(List<Contract> contracts) {
+		this.contracts = contracts;
+	}
+	
+	public void addContract(Contract contract) {
+		this.contracts.add(contract);
+	}
+	
+	public void removeContract(Contract contract) {
+		this.contracts.remove(contract);
 	}
 }

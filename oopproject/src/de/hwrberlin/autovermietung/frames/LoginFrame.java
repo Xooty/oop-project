@@ -2,6 +2,10 @@ package de.hwrberlin.autovermietung.frames;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -14,6 +18,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import de.hwrberlin.autovermietung.Main;
+import de.hwrberlin.autovermietung.mysql.MySQL;
+import de.hwrberlin.autovermietung.users.Permission;
 import de.hwrberlin.autovermietung.users.User;
 
 public class LoginFrame extends MainFrame {
@@ -29,7 +35,7 @@ public class LoginFrame extends MainFrame {
 	private JPasswordField passwordfield_login_password;
 	
 	public LoginFrame() {
-		super(0, "Login", 300, 350);
+		super(0, Permission.USER, "Login", 300, 350);
 		
 		this.panel_login = this.getLoginPanel(0, 0, 300, 350);
 
@@ -76,8 +82,31 @@ public class LoginFrame extends MainFrame {
 	}
 	
 	public User login(String user_name, String user_password) {
-		for (User user : Main.getUserManager().getUsers()) {
-			if (user.getUserName().equals(user_name) && user.getUserPassword().equals(user_password)) return user;
+		MySQL mysql = Main.getMySQL();
+		Connection connection = mysql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM users WHERE user_name = ? AND user_password = ?");
+			st.setString(1, user_name);
+			st.setString(2, user_password);
+			
+			rs = st.executeQuery();
+			
+			if (rs.first()) {
+				return mysql.setUser(new User(rs.getInt("user_id")));
+			} else {
+				return null;
+			}
+		} catch (NullPointerException e) {
+			System.err.println("Der User konnte nicht geladen werden.");
+			mysql.closeRessources(rs, st, connection);
+			return null;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			mysql.closeRessources(rs, st, connection);
 		}
 		return null;
 	}
@@ -96,7 +125,11 @@ public class LoginFrame extends MainFrame {
 			
 			if (user != null) {
 				JOptionPane.showMessageDialog(null, "Sie haben sich erfolgreich als " + user.getUserName() + " angemeldet. Berechtigungsstufe: " + user.getPermission());
-				Main.getFrameManager().openFrameByID(1);
+				if (user.hasPermission(Permission.ADMIN)) {
+					Main.getFrameManager().openFrameByID(1);
+				} else {
+					Main.getFrameManager().openFrameByID(101);
+				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Der Benutzername oder das Passwort stimmen nicht. Bitte überprüfen Sie die Schreibweise.");
 			}

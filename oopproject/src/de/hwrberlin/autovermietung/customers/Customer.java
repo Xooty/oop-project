@@ -1,6 +1,6 @@
-package de.hwrberlin.autovermietung.humans;
+package de.hwrberlin.autovermietung.customers;
 
-public class Human {
+public class Customer {
 
 	private String name, surname;
 	
@@ -10,7 +10,7 @@ public class Human {
 	
 	private String phone;
 	
-	public Human(String name, String surname, int age, String id) {
+	public Customer(String name, String surname, int age, String id) {
 		this.name = name;
 		this.surname = surname;
 		

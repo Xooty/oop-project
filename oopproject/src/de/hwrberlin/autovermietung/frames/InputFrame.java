@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 
+import de.hwrberlin.autovermietung.Main;
+import de.hwrberlin.autovermietung.users.Permission;
+
 public class InputFrame extends MainFrame {
 
 	private static final long serialVersionUID = 6046886206685122861L;
@@ -11,7 +14,7 @@ public class InputFrame extends MainFrame {
 	private JButton button_save_and_quit;
 	
 	public InputFrame() {
-		super(-1, "Eingabe", 400, 400);
+		super(103, Permission.USER, "Test", 400, 400);
 		
 		this.setAlwaysOnTop(true);
 		
@@ -23,6 +26,9 @@ public class InputFrame extends MainFrame {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		
+		if (event.getSource() == this.button_save_and_quit) {
+			
+			Main.getFrameManager().openFrameByID(101);
+		}
 	}
 }

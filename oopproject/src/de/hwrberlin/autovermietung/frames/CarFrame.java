@@ -3,6 +3,7 @@ package de.hwrberlin.autovermietung.frames;
 import java.awt.event.ActionEvent;
 
 import de.hwrberlin.autovermietung.cars.Car;
+import de.hwrberlin.autovermietung.users.Permission;
 
 public class CarFrame  extends MainFrame {
 
@@ -11,7 +12,7 @@ public class CarFrame  extends MainFrame {
 	private Car car;
 
 	public CarFrame() {
-		super(3, "Auto: ", 450, 450);
+		super(102, Permission.USER, "Auto: ", 450, 450);
 	}
 
 	public void setCar(Car car) {
