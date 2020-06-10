@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 
 import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.cars.Car;
@@ -31,13 +30,13 @@ public class MenuFrame extends MainFrame {
 		
 		this.combobox_cars = new JComboBox<Object>(cars.toArray());
 		this.combobox_cars.setSelectedIndex(0);
-		this.combobox_cars.setBounds(200, 200, 250, 25);
+		this.combobox_cars.setBounds(300, 250, 250, 25);
 
 		this.button_select = new JButton("Auswählen");
 		this.button_select.setBounds(300, 300, 250, 25);
 		this.button_select.addActionListener(this);
 		
-		this.button_calendar = new JButton("Kalendar");
+		this.button_calendar = new JButton("Kalender");
 		this.button_calendar.setBounds(300, 500, 250, 25);
 		this.button_calendar.addActionListener(this);
 		
@@ -49,8 +48,6 @@ public class MenuFrame extends MainFrame {
 		this.add(this.button_select);
 		this.add(this.button_calendar);
 		this.add(this.button_change_password);
-		
-		this.add(new JLabel());
 	}
 
 	@Override

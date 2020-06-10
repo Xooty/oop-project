@@ -16,8 +16,6 @@ public class InputFrame extends MainFrame {
 	public InputFrame() {
 		super(103, Permission.USER, "Test", 400, 400);
 		
-		this.setAlwaysOnTop(true);
-		
 		this.button_save_and_quit = new JButton("Speichern & Verlassen");
 		this.button_save_and_quit.addActionListener(this);
 		

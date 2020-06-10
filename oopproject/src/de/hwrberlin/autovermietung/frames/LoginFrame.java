@@ -1,19 +1,21 @@
 package de.hwrberlin.autovermietung.frames;
 
-import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -26,9 +28,7 @@ public class LoginFrame extends MainFrame {
 
 	private static final long serialVersionUID = 4444358342846683048L;
 
-	private JPanel panel_login;
-	
-	private JButton button_login;
+	private JButton button_login, button_cancel;
 	
 	private JLabel label_login_user, label_login_password;
 	private JTextField textfield_login_user;
@@ -37,48 +37,37 @@ public class LoginFrame extends MainFrame {
 	public LoginFrame() {
 		super(0, Permission.USER, "Login", 300, 350);
 		
-		this.panel_login = this.getLoginPanel(0, 0, 300, 350);
-
-		this.getContentPane().add(this.panel_login);
-		
-		this.add(new JLabel());
-	}
-	
-	public JPanel getLoginPanel(int x, int y, int width, int height) {
+		this.setContentPane(new ImagePanel());
 		
 		this.button_login = new JButton("Anmelden");
-		
-		this.label_login_user = new JLabel("User");
-		this.label_login_password = new JLabel("Passwort");
-		
-		this.textfield_login_user = new JTextField();
-		this.passwordfield_login_password = new JPasswordField();
-
-		/////////////////////////////////////////////////////
-		
+		this.button_login.setBounds(25, 225, 100, 25);
 		this.button_login.addActionListener(this);
 		
-		/////////////////////////////////////////////////////
+		this.button_cancel = new JButton("Abbrechen");
+		this.button_cancel.setBounds(175, 225, 100, 25);
+		this.button_cancel.addActionListener(this);
 		
-		JPanel panel = new JPanel();
+		this.label_login_user = new JLabel("User");
+		this.label_login_user.setBounds(100, 30, 100, 40);
+		this.label_login_user.setIcon(new ImageIcon("res/avatar.png"));
 		
-		panel.setBounds(x, y, width, height);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBorder(BorderFactory.createEmptyBorder(50, 100, 100, 100));
+		this.label_login_password = new JLabel("Passwort");
+		this.label_login_password.setBounds(100, 110, 100, 40);
+		this.label_login_password.setIcon(new ImageIcon("res/password.png"));
 		
-		panel.add(this.label_login_user);
-		panel.add(Box.createRigidArea(new Dimension(0, 0)));
-		panel.add(this.textfield_login_user);
-		panel.add(Box.createRigidArea(new Dimension(0, 50)));
+		this.textfield_login_user = new JTextField();
+		this.textfield_login_user.setBounds(100, 75, 100, 25);
+
+		this.passwordfield_login_password = new JPasswordField();
+		this.passwordfield_login_password.setBounds(100, 150, 100, 25);
 		
-		panel.add(this.label_login_password);
-		panel.add(Box.createRigidArea(new Dimension(0, 0)));
-		panel.add(this.passwordfield_login_password);
-		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 		
-		panel.add(this.button_login);
-		
-		return panel;
+		this.add(this.button_login);
+		this.add(this.button_cancel);
+		this.add(this.label_login_user);
+		this.add(this.label_login_password);
+		this.add(this.textfield_login_user);
+		this.add(this.passwordfield_login_password);
 	}
 	
 	public User login(String user_name, String user_password) {
@@ -133,6 +122,29 @@ public class LoginFrame extends MainFrame {
 			} else {
 				JOptionPane.showMessageDialog(null, "Der Benutzername oder das Passwort stimmen nicht. Bitte überprüfen Sie die Schreibweise.");
 			}
+		} else if (event.getSource() == this.button_cancel) {
+			System.exit(0);
 		}
+	}
+	
+	class ImagePanel extends JComponent {
+
+		private static final long serialVersionUID = -7108340505337167138L;
+		
+		private Image image;
+		
+	    public ImagePanel() {
+	        try {
+				this.image = ImageIO.read(new File("res/background_login.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			};
+	    }
+	    
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        g.drawImage(image, 20, 30, this.getWidth() - 30, this.getHeight() - 60, this);
+	    }
 	}
 }

@@ -11,7 +11,7 @@ public class CalendarFrame extends MainFrame {
 	private static final long serialVersionUID = -6981272971991070467L;
 
 	public CalendarFrame() {
-		super(3, Permission.ADMIN, "Kalendar", 800, 800);
+		super(106, Permission.USER, "Kalender", 800, 800);
 		
 		JCalendar cal = new JCalendar();
 		

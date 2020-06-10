@@ -9,7 +9,7 @@ public class ContractFrame extends MainFrame {
 	private static final long serialVersionUID = -344819132138234335L;
 
 	public ContractFrame() {
-		super(2, Permission.ADMIN, "Offene Angebote", 900, 900);
+		super(105, Permission.USER, "Aufträge", 900, 900);
 	}
 
 	@Override

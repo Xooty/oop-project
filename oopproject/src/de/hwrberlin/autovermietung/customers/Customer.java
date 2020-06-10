@@ -1,26 +1,39 @@
 package de.hwrberlin.autovermietung.customers;
 
+import java.util.Calendar;
+import java.util.List;
+
+import de.hwrberlin.autovermietung.contract.Contract;
+
 public class Customer {
 
-	private String name, surname;
+	private int customer_id;
 	
-	private int age;
+	private String first_name, surname;
 	
-	private String id;
+	private Calendar birth_date;
 	
-	private String phone;
+	private String address;
 	
-	public Customer(String name, String surname, int age, String id) {
-		this.name = name;
+	private String phone, email;
+	
+	private List<Contract> current_contracts, last_contracts;
+	
+	public Customer(int customer_id, String first_name, String surname, Calendar birth_date) {
+		this.customer_id = customer_id;
+		
+		this.first_name = first_name;
 		this.surname = surname;
 		
-		this.age = age;
-		
-		this.id = id;
+		this.birth_date = birth_date;
 	}
 	
-	public String getName() {
-		return this.name;
+	public int getCustomerID() {
+		return this.customer_id;
+	}
+	
+	public String getFirstName() {
+		return this.first_name;
 	}
 	
 	public String getSurname() {
@@ -28,15 +41,19 @@ public class Customer {
 	}
 	
 	public String getFullName() {
-		return this.name + " " + this.surname;
+		return this.first_name + " " + this.surname;
 	}
 	
-	public int getAge() {
-		return this.age;
+	public Calendar getBirthDate() {
+		return this.birth_date;
 	}
 	
-	public String getID() {
-		return this.id;
+	public String getAddress() {
+		return this.address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	public String getPhone() {
@@ -45,5 +62,29 @@ public class Customer {
 	
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public List<Contract> getCurrentContracts() {
+		return this.current_contracts;
+	}
+	
+	public void setCurrentContracts(List<Contract> current_contracts) {
+		this.current_contracts = current_contracts;
+	}
+	
+	public List<Contract> getLastContracts() {
+		return this.last_contracts;
+	}
+	
+	public void setLastContracts(List<Contract> last_contracts) {
+		this.last_contracts = last_contracts;
 	}
 }

@@ -57,11 +57,13 @@ public class FrameManager {
 		this.frames.clear();						// ID
 		this.addFrame(new LoginFrame());			// 0
 		this.addFrame(new MenuFrame());				// 1
-		this.addFrame(new ContractFrame());			// 2
-		this.addFrame(new CalendarFrame()); 		// 3
 		
 		this.addFrame(new WorkerMenuFrame()); 		// 101
 		this.addFrame(new CarFrame());				// 102
-		this.addFrame(new InputFrame());	// 103
+		this.addFrame(new InputFrame());			// 103
+		this.addFrame(new CustomersFrame());		// 104
+		this.addFrame(new ContractFrame());			// 105
+		this.addFrame(new CalendarFrame()); 		// 106
+		this.addFrame(new CarsFrame());				// 107
 	}
 }

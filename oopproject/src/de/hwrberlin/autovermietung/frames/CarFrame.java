@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import de.hwrberlin.autovermietung.cars.Car;
 import de.hwrberlin.autovermietung.users.Permission;
 
-public class CarFrame  extends MainFrame {
+public class CarFrame extends MainFrame {
 
 	private static final long serialVersionUID = 1723247931375093671L;
 	

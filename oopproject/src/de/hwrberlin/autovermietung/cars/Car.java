@@ -182,7 +182,7 @@ public class Car {
 		this.previous_customers.add(customer);
 	}
 	
-	public void removePreviousHuman(Customer customer) {
+	public void removePreviousCustomer(Customer customer) {
 		this.previous_customers.remove(customer);
 	}
 	

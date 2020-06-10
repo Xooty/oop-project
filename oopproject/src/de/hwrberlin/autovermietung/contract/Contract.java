@@ -5,9 +5,11 @@ import de.hwrberlin.autovermietung.customers.Customer;
 
 public class Contract {
 
-	private int id;
+	private int contract_id;
 	
-	private Customer human;
+	private int worker_id;
+	
+	private Customer customer;
 	
 	private Car car;
 	
@@ -17,20 +19,26 @@ public class Contract {
 	
 	private boolean insurance;
 	
-	public Contract(int id, Customer human, Car car) {
-		this.id = id;
+	public Contract(int contract_id, int worker_id, Customer customer, Car car) {
+		this.contract_id = contract_id;
 		
-		this.human = human;
+		this.worker_id = worker_id;
+		
+		this.customer = customer;
 		
 		this.car = car;
 	}
 	
-	public int getID() {
-		return this.id;
+	public int getContractID() {
+		return this.contract_id;
 	}
 	
-	public Customer getHuman() {
-		return this.human;
+	public int getWorkerID() {
+		return this.worker_id;
+	}
+	
+	public Customer getCustomer() {
+		return this.customer;
 	}
 	
 	public Car getCar() {

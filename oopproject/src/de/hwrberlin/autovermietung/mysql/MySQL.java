@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 import de.hwrberlin.autovermietung.users.User;
 
 public class MySQL {
@@ -148,19 +150,64 @@ public class MySQL {
 
 	public void initTables() {
 
-		Connection connection = this.openConnection();
+		Connection connection = null;
 		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://" + this.host + ":" + this.port + "/", this.user, this.password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Das Programm konnte keine Verbindung zur Datenbank herstellen!");
+			return;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		try {
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users (user_id INTEGER AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), user_password VARCHAR(50), permissions VARCHAR(50))");
+			st = connection.prepareStatement("CREATE DATABASE IF NOT EXISTS autovermietung");
 			st.executeUpdate();
 			st.close();
+			this.closeConnection(connection);
+			
+			connection = this.openConnection();
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users (user_id INTEGER AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), user_password VARCHAR(50), permissions VARCHAR(50), last_login TIMESTAMP)");
+			st.executeUpdate();
+			st.close();
+			
 			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, car_brand VARCHAR(50), car_model VARCHAR(50), horsepower INTEGER)");
 			st.executeUpdate();
 			st.close();
+			
 			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS customers (customer_id INTEGER AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(50), surname VARCHAR(50), age INTEGER)");
 			st.executeUpdate();
 			st.close();
+			
+			st = connection.prepareStatement("SELECT * FROM users");
+			rs = st.executeQuery();
+			
+			if (!rs.first()) {
+				st.close();
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('alex', '123', 'ADMIN')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('jassi', '123', 'USER')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('marc', '123', 'USER')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('niklas', '123', 'USER')");
+				st.executeUpdate();
+				st.close();
+			}
+			rs.close();
+			
+			JOptionPane.showMessageDialog(null, "Das Programm hat sich mit der Datenbank verbunden!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

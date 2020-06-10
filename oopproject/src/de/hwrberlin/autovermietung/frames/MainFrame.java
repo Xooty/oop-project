@@ -5,8 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -36,11 +36,14 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		this.setVisible(false);
 		this.setSize(width, height);
 		
+		ImageIcon img = new ImageIcon("res/icon.png");
+		this.setIconImage(img.getImage());
+		
 		this.setResizable(false);
+		this.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		this.add(new JLabel());
 	}
 	
 	public int getID() {
@@ -78,7 +81,7 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		first_menu.add(menu_item_logout);
 
 		JMenuItem menu_item_close = new JMenuItem("Beenden", KeyEvent.VK_ESCAPE);
-		menu_item_close.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+		menu_item_close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
 		menu_item_close.setMnemonic(KeyEvent.VK_B);
 		menu_item_close.addActionListener(new ActionListener() {
 			@Override

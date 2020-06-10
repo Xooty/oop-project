@@ -25,7 +25,7 @@ public class ContractManager {
 	
 	public Contract getContractByID(int id) {
 		for (Contract contract : this.contracts) {
-			if (contract.getID() == id) return contract;
+			if (contract.getContractID() == id) return contract;
 		}
 		return null;
 	}
