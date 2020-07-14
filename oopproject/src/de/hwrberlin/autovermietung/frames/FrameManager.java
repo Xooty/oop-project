@@ -58,7 +58,7 @@ public class FrameManager {
 		this.addFrame(new LoginFrame());			// 0
 		this.addFrame(new MenuFrame());				// 1
 		
-		this.addFrame(new WorkerMenuFrame()); 		// 101
+		this.addFrame(new EmployeeMenuFrame());		// 101
 		this.addFrame(new CarFrame());				// 102
 		this.addFrame(new InputFrame());			// 103
 		this.addFrame(new CustomersFrame());		// 104

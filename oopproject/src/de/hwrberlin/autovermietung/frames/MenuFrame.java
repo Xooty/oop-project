@@ -21,7 +21,9 @@ public class MenuFrame extends MainFrame {
 	
 	public MenuFrame() {
 		super(1, Permission.ADMIN, "Hauptmenü", 600, 600);
-		
+	}
+	
+	public void setup() {
 		List<String> cars = new ArrayList<String>();
 		
 		for (Car car : Main.getCarManager().getCars()) {

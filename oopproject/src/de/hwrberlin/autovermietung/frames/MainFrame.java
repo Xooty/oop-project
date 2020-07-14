@@ -36,14 +36,12 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		this.setVisible(false);
 		this.setSize(width, height);
 		
-		ImageIcon img = new ImageIcon("res/icon.png");
-		this.setIconImage(img.getImage());
+		this.setIconImage(new ImageIcon(this.getClass().getResource("/images/logo.png")).getImage());
 		
 		this.setResizable(false);
 		this.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 	}
 	
 	public int getID() {
