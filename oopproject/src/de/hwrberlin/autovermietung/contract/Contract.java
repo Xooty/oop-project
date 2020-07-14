@@ -1,7 +1,14 @@
 package de.hwrberlin.autovermietung.contract;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.cars.Car;
 import de.hwrberlin.autovermietung.customers.Customer;
+import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class Contract {
 
@@ -27,6 +34,30 @@ public class Contract {
 		this.customer = customer;
 		
 		this.car = car;
+	}
+	
+	public Contract(int contract_id) {
+		this.contract_id = contract_id;
+		
+		MySQL mysql = Main.getMySQL();
+		Connection connection = mysql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM contracts WHERE contract_id = ?");
+			st.setInt(1, this.contract_id);
+			
+			rs = st.executeQuery();
+			
+			if (rs.first()) {
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			mysql.closeRessources(rs, st, connection);
+		}
 	}
 	
 	public int getContractID() {

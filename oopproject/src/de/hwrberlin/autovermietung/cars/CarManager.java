@@ -1,7 +1,14 @@
 package de.hwrberlin.autovermietung.cars;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hwrberlin.autovermietung.Main;
+import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class CarManager {
 
@@ -9,6 +16,8 @@ public class CarManager {
 	
 	public CarManager() {
 		this.cars = new ArrayList<Car>();
+		
+		this.setupCars();
 	}
 	
 	public List<Car> getCars() {
@@ -36,5 +45,11 @@ public class CarManager {
 			if (car_name.equalsIgnoreCase(name)) return car;
 		}
 		return null;
+	}
+	
+	public void setupCars() {
+		
+//		this.addCar(new Car().setCarBrand(CarBrand.AUDI).setModel("RS6").setCarType(CarType.SPORT).setID("012394382").setHorsepower(600).setTorque(800).setTopspeed(330).setFuel(60).setFuelType(FuelType.SUPER).setPrice(117500).setMileage(0));
+//		this.addCar(new Car().setCarBrand(CarBrand.HYUNDAI).setModel("i30N").setCarType(CarType.SPORT).setID("123456789").setHorsepower(275).setTorque(378).setTopspeed(250).setFuel(45).setFuelType(FuelType.SUPER).setPrice(38000).setMileage(0));
 	}
 }

@@ -176,11 +176,19 @@ public class MySQL {
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, car_brand VARCHAR(50), car_model VARCHAR(50), horsepower INTEGER)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, class_id INTEGER, car_brand VARCHAR(50), car_model VARCHAR(50), power INTEGER, torque INTEGER, price DOUBLE, mileage INTEGER, topspeed INTEGER)");
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS customers (customer_id INTEGER AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(50), surname VARCHAR(50), age INTEGER)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars_class (class_id INTEGER AUTO_INCREMENT PRIMARY KEY, class_name VARCHAR(10), price DOUBLE)");
+			st.executeUpdate();
+			st.close();
+			
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS customers (customer_id INTEGER AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(50), surname VARCHAR(50), birth_date VARCHAR(20), country VARCHAR(50), city VARCHAR(50), zip_code VARCHAR(20), street VARCHAR(200), email VARCHAR(200), phone VARCHAR(50))");
+			st.executeUpdate();
+			st.close();
+			
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS contracts (contract_id INTEGER AUTO_INCREMENT PRIMARY KEY, customer_id INTEGER, car_id INTEGER, employee_id INTEGER)");
 			st.executeUpdate();
 			st.close();
 			
@@ -193,7 +201,7 @@ public class MySQL {
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('jassi', '123', 'USER')");
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('jassii', '123', 'USER')");
 				st.executeUpdate();
 				st.close();
 				
@@ -202,6 +210,85 @@ public class MySQL {
 				st.close();
 				
 				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('niklas', '123', 'USER')");
+				st.executeUpdate();
+				st.close();
+			}
+			rs.close();
+			
+			st = connection.prepareStatement("SELECT * FROM cars");
+			rs = st.executeQuery();
+			
+			if (!rs.first()) {
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (1, 'smart', 'fortwo', 52, 160, 21386.9, 0, 155)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (2, 'Volkswagen', 'Golf', 66, 175, 19880.8, 188)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (3, 'Mercedes-Benz', 'E200', 143)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (4, 'Volkswagen', 'Touareg', 170)");
+				st.executeUpdate();
+				st.close();
+			}
+			rs.close();
+			
+			st = connection.prepareStatement("SELECT * FROM cars_class");
+			rs = st.executeQuery();
+			
+			if (!rs.first()) {
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('A', 35)"); // smart fortwo
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('E', 60)"); // Volkswagen Golf
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('I', 100)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('J', 130)");
+				st.executeUpdate();
+				st.close();
+			}
+			
+			st = connection.prepareStatement("SELECT * FROM customers");
+			rs = st.executeQuery();
+			
+			if (!rs.first()) {
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Max', 'Mustermann', '01.01.1970', 'Deutschland', 'Berlin', '13581', 'Max-Mustermann-Straße 10', 'max.mustermann@example.com', '017591231022')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Hans', 'Wurst', '23.05.1980', 'Deutschland', 'München', '80689', 'Hans-Wurst-Weg 2b', 'hans@wurst.de', '017310387234')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Fridolin', 'Müller', '25.03.1996', 'Deutschland', 'Berlin', '10559', 'Müller-Meier-Schmidt-Straße 61c', 'fridolin@muellerchen.org', '017591231022')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Jürgen', 'Meier', '28.07.1977', 'Österreich', 'Wien', '1050', 'Schönbrunner Str. 5', 'meier.guenther@irgendwas.at', '+43-663 14293418')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Robert', 'Schmitt', '05.12.1950', 'Deutschland', 'Köln', '50667', 'Max-Mustermann-Straße 10', '', '01751534628')");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Uwe', 'Schmidt', '01.04.1947', 'Deutschland', 'Berlin', '10115', 'Uwe-Meme-Straße 57', 'ichbinderuwe@ichbinauchdabei.de', '')");
 				st.executeUpdate();
 				st.close();
 			}
