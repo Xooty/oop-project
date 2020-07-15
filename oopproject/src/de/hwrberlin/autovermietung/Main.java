@@ -1,7 +1,7 @@
 package de.hwrberlin.autovermietung;
 
-import de.hwrberlin.autovermietung.cars.CarManager;
-import de.hwrberlin.autovermietung.frames.FrameManager;
+import de.hwrberlin.autovermietung.manager.CarManager;
+import de.hwrberlin.autovermietung.manager.FrameManager;
 import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class Main {

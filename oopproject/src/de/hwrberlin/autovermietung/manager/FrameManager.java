@@ -1,7 +1,20 @@
-package de.hwrberlin.autovermietung.frames;
+package de.hwrberlin.autovermietung.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hwrberlin.autovermietung.frames.CalendarFrame;
+import de.hwrberlin.autovermietung.frames.CarFrame;
+import de.hwrberlin.autovermietung.frames.CarsFrame;
+import de.hwrberlin.autovermietung.frames.ContractFrame;
+import de.hwrberlin.autovermietung.frames.CustomersFrame;
+import de.hwrberlin.autovermietung.frames.EmployeeMenuFrame;
+import de.hwrberlin.autovermietung.frames.InputFrame;
+import de.hwrberlin.autovermietung.frames.LoginFrame;
+import de.hwrberlin.autovermietung.frames.MainFrame;
+import de.hwrberlin.autovermietung.frames.MenuFrame;
+import de.hwrberlin.autovermietung.frames.SearchUserFrame;
+import de.hwrberlin.autovermietung.frames.UsersFrame;
 
 public class FrameManager {
 
@@ -57,6 +70,8 @@ public class FrameManager {
 		this.frames.clear();						// ID
 		this.addFrame(new LoginFrame());			// 0
 		this.addFrame(new MenuFrame());				// 1
+		this.addFrame(new UsersFrame());			// 2
+		this.addFrame(new SearchUserFrame());		// 3
 		
 		this.addFrame(new EmployeeMenuFrame());		// 101
 		this.addFrame(new CarFrame());				// 102

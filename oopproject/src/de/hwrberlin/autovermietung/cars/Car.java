@@ -16,6 +16,8 @@ public class Car {
 
 	private int car_id;
 	
+	private String plate_number;
+	
 	private int class_id;
 	
 	private CarBrand car_brand;
@@ -72,6 +74,7 @@ public class Car {
 			rs = st.executeQuery();
 			
 			if (rs.first()) {
+				this.plate_number = rs.getString("plate_number");
 				this.class_id = rs.getInt("class_id");
 				this.car_brand = CarBrand.valueOf(rs.getString("car_brand"));
 				this.model = rs.getString("car_model");
@@ -89,6 +92,10 @@ public class Car {
 	
 	public int getCarID() {
 		return this.car_id;
+	}
+	
+	public String getPlateNumber() {
+		return this.plate_number;
 	}
 	
 	public int getClassID() {

@@ -1,7 +1,9 @@
-package de.hwrberlin.autovermietung.contract;
+package de.hwrberlin.autovermietung.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hwrberlin.autovermietung.contract.Contract;
 
 public class ContractManager {
 

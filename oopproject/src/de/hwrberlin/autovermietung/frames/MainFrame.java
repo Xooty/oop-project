@@ -74,7 +74,6 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 				}
 			}
 		});
-		menu_item_logout.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
 		
 		first_menu.add(menu_item_logout);
 

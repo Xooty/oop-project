@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.users.User;
 
 public class MySQL {
@@ -172,11 +173,11 @@ public class MySQL {
 			this.closeConnection(connection);
 			
 			connection = this.openConnection();
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users (user_id INTEGER AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), user_password VARCHAR(50), permissions VARCHAR(50), last_login TIMESTAMP)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users (user_id INTEGER AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(50), user_password VARCHAR(50), permissions VARCHAR(50))");
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, class_id INTEGER, car_brand VARCHAR(50), car_model VARCHAR(50), power INTEGER, torque INTEGER, price DOUBLE, mileage INTEGER, topspeed INTEGER)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, plate_number VARCHAR(50), class_id INTEGER, car_brand VARCHAR(50), car_model VARCHAR(50), power INTEGER, torque INTEGER, price DOUBLE, mileage INTEGER, topspeed INTEGER)");
 			st.executeUpdate();
 			st.close();
 			
@@ -188,7 +189,7 @@ public class MySQL {
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS contracts (contract_id INTEGER AUTO_INCREMENT PRIMARY KEY, customer_id INTEGER, car_id INTEGER, employee_id INTEGER)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS contracts (contract_id INTEGER AUTO_INCREMENT PRIMARY KEY, customer_id INTEGER, car_id INTEGER, employee_id INTEGER, contract_start LONG, contract_end LONG)");
 			st.executeUpdate();
 			st.close();
 			
@@ -221,19 +222,19 @@ public class MySQL {
 			if (!rs.first()) {
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (1, 'smart', 'fortwo', 52, 160, 21386.9, 0, 155)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (1, 'B-GT 123', 'smart', 'fortwo', 52, 160, 21386.9, 0, 155)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (2, 'Volkswagen', 'Golf', 66, 175, 19880.8, 188)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (2, 'B-GT 124', 'Volkswagen', 'Golf', 66, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (3, 'Mercedes-Benz', 'E200', 143)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (3, 'B-GT 125', 'Mercedes-Benz', 'E200', 143, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (4, 'Volkswagen', 'Touareg', 170)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (4, 'B-GT 126', 'Volkswagen', 'Touareg', 170, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 			}
@@ -253,11 +254,11 @@ public class MySQL {
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('I', 100)");
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('I', 100)"); // Mercedes-Benz E200
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('J', 130)");
+				st = connection.prepareStatement("INSERT INTO cars_class (class_name, price) VALUES ('J', 130)"); // Volkswagen Touareg
 				st.executeUpdate();
 				st.close();
 			}
@@ -294,11 +295,44 @@ public class MySQL {
 			}
 			rs.close();
 			
-			JOptionPane.showMessageDialog(null, "Das Programm hat sich mit der Datenbank verbunden!");
+//			JOptionPane.showMessageDialog(null, "Das Programm hat sich mit der Datenbank verbunden!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			this.closeRessources(null, st, connection);
 		}
+	}
+	
+	public boolean createUser(String user_name, String password, String permission) {
+		MySQL sql = Main.getMySQL();
+    	Connection connection = sql.openConnection();
+    	PreparedStatement st = null;
+    	ResultSet rs = null;
+    	
+    	try {
+    		st = connection.prepareStatement("SELECT * FROM users WHERE user_name = ?");
+    		st.setString(1, user_name);
+    		rs = st.executeQuery();
+    		
+    		if (rs.first()) {
+    			return false;
+    		} else {
+    			st.close();
+    			
+    			st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES (?, ?, ?)");
+    			st.setString(1, user_name);
+    			st.setString(2, password);
+    			st.setString(3, permission);
+    			
+    			st.executeUpdate();
+    			
+    			return true;
+    		}
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	} finally {
+    		sql.closeRessources(rs, st, connection);
+    	}
+    	return false;
 	}
 }

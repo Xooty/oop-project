@@ -1,14 +1,9 @@
-package de.hwrberlin.autovermietung.cars;
+package de.hwrberlin.autovermietung.manager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hwrberlin.autovermietung.Main;
-import de.hwrberlin.autovermietung.mysql.MySQL;
+import de.hwrberlin.autovermietung.cars.Car;
 
 public class CarManager {
 

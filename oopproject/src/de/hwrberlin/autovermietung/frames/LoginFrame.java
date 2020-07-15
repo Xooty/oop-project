@@ -154,8 +154,7 @@ public class LoginFrame extends MainFrame {
 			if (user != null) {
 				JOptionPane.showMessageDialog(null, "Sie haben sich erfolgreich als " + user.getUserName() + " angemeldet. Berechtigungsstufe: " + user.getPermission());
 				if (user.hasPermission(Permission.ADMIN)) {
-					MenuFrame menu_frame = (MenuFrame) Main.getFrameManager().openFrameByID(1);
-					menu_frame.setup();
+					Main.getFrameManager().openFrameByID(1);
 				} else {
 					Main.getFrameManager().openFrameByID(101);
 				}

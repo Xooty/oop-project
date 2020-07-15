@@ -1,7 +1,9 @@
-package de.hwrberlin.autovermietung.customers;
+package de.hwrberlin.autovermietung.manager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hwrberlin.autovermietung.customers.Customer;
 
 public class CustomerManager {
 
