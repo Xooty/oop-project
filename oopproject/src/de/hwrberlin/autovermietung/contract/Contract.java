@@ -6,35 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.hwrberlin.autovermietung.Main;
-import de.hwrberlin.autovermietung.cars.Car;
-import de.hwrberlin.autovermietung.customers.Customer;
 import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class Contract {
 
-	private int contract_id;
+	private int contract_id, employee_id, customer_id, car_id;
 	
-	private int worker_id;
+	private long contract_start, contract_end;
 	
-	private Customer customer;
-	
-	private Car car;
-	
-	private long time_start, time_end;
-	
-	private long mileage_start, mileage_end;
-	
-	private boolean insurance;
-	
-	public Contract(int contract_id, int worker_id, Customer customer, Car car) {
-		this.contract_id = contract_id;
-		
-		this.worker_id = worker_id;
-		
-		this.customer = customer;
-		
-		this.car = car;
-	}
+	private int mileage_start, mileage_end;
 	
 	public Contract(int contract_id) {
 		this.contract_id = contract_id;
@@ -50,9 +30,17 @@ public class Contract {
 			
 			rs = st.executeQuery();
 			
-			if (rs.first()) {
+			rs.first();
+			
+			this.employee_id = rs.getInt("employee_id");
+			this.customer_id = rs.getInt("customer_id");
+			this.car_id = rs.getInt("car_id");
+			
+			this.contract_start = rs.getLong("contract_start");
+			this.contract_end = rs.getLong("contract_end");
 				
-			}
+			this.mileage_start = rs.getInt("mileage_start");
+			this.mileage_end = rs.getInt("mileage_end");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -65,70 +53,58 @@ public class Contract {
 	}
 	
 	public int getWorkerID() {
-		return this.worker_id;
+		return this.employee_id;
 	}
 	
-	public Customer getCustomer() {
-		return this.customer;
+	public int getCustomerID() {
+		return this.customer_id;
 	}
 	
-	public Car getCar() {
-		return this.car;
+	public int getCarID() {
+		return this.car_id;
 	}
 	
-	public long getTimeStart() {
-		return this.time_start;
+	public long getContractStart() {
+		return this.contract_start;
 	}
 	
-	public void setTimeStart(long time) {
-		this.time_start = time;
+	public void setContractStart(long contract_start) {
+		this.contract_start = contract_start;
 	}
 	
-	public long getTimeEnd() {
-		return this.time_end;
+	public long getContractEnd() {
+		return this.contract_end;
 	}
 	
-	public void setEndTime(long time) {
-		this.time_end = time;
-	}
-	
-	public void addTimeEnd(long time) {
-		this.time_end += time;
+	public void setContractEnd(long contract_end) {
+		this.contract_end = contract_end;
 	}
 	
 	public long getTimeLeft() {
-		return this.time_end - this.time_start;
+		return this.contract_end - this.contract_start;
 	}
 	
-	public long getMileageStart() {
+	public int getMileageStart() {
 		return this.mileage_start;
 	}
 	
-	public void setMileageStart(long mileage) {
-		this.mileage_start = mileage;
+	public void setMileageStart(int mileage_start) {
+		this.mileage_start = mileage_start;
 	}
 	
-	public long getMileageEnd() {
+	public void addMileageStart(int mileage_start) {
+		this.mileage_start += mileage_start;
+	}
+	
+	public int getMileageEnd() {
 		return this.mileage_end;
 	}
 	
-	public void setMileageEnd(long mileage) {
-		this.mileage_end = mileage;
+	public void setMileageEnd(int mileage_end) {
+		this.mileage_end = mileage_end;
 	}
 	
-	public void addMileageEnd(long mileage) {
-		this.mileage_end += mileage;
-	}
-	
-	public long getMileageDifference() {
-		return this.mileage_end - this.mileage_start;
-	}
-	
-	public boolean hasInsurance() {
-		return this.insurance;
-	}
-	
-	public void setInsurance(boolean insurance) {
-		this.insurance = insurance;
+	public void addMileageEnd(int mileage_end) {
+		this.mileage_end += mileage_end;
 	}
 }

@@ -16,8 +16,6 @@ public class User {
 	
 	private Permission permission;
 	
-	private long last_login;
-
 	public User(int user_id) {
 		this.user_id = user_id;
 		
@@ -37,7 +35,6 @@ public class User {
 			this.user_name = rs.getString("user_name");
 			this.user_password = rs.getString("user_password");
 			this.permission = Permission.valueOf(rs.getString("permissions").toUpperCase());
-//			this.last_login = rs.getInt("last_login");
 		} catch (NullPointerException | SQLException e) {
 			System.err.println("Der User konnte nicht geladen werden.");
 			e.printStackTrace();
@@ -46,8 +43,6 @@ public class User {
 		} finally {
 			mysql.closeRessources(rs, st, connection);
 		}
-		
-//		Main.getMySQL().queryUpdate("UPDATE users SET last_login = " + System.currentTimeMillis() + " WHERE user_id = " + this.user_id);
 	}
 	
 	public int getUserID() {
@@ -91,10 +86,9 @@ public class User {
 		ResultSet rs = null;
 		
 		try {
-			st = connection.prepareStatement("UPDATE users SET user_password = ? WHERE user_id = ? AND user_name = ?");
+			st = connection.prepareStatement("UPDATE users SET user_password = ? WHERE user_id = ?");
 			st.setString(1, this.user_password);
 			st.setInt(2, this.user_id);
-			st.setString(3, this.user_name);
 			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,10 +110,6 @@ public class User {
 	
 	public void setPermission(Permission permission) {
 		this.permission = permission;
-	}
-	
-	public long getLastLogin() {
-		return this.last_login;
 	}
 	
 	public void updateUser(String user_name, String password, Permission permission) {

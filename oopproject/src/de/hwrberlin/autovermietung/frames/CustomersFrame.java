@@ -45,7 +45,8 @@ public class CustomersFrame extends MainFrame {
         	
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			customer = new Customer(0, first_name.getText(), surname.getText(), cal);
+//			customer = new Customer(0, first_name.getText(), surname.getText(), cal);
+			customer = new Customer(0);
 	        
 	        System.out.println(customer.getFullName() + " wurde hinzugefügt. Der Kunde ist momentan " + (Calendar.getInstance().get(Calendar.YEAR) - customer.getBirthDate().get(Calendar.YEAR)) + " Jahre alt!");
         }

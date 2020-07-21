@@ -73,16 +73,16 @@ public class Car {
 			
 			rs = st.executeQuery();
 			
-			if (rs.first()) {
-				this.plate_number = rs.getString("plate_number");
-				this.class_id = rs.getInt("class_id");
-				this.car_brand = CarBrand.valueOf(rs.getString("car_brand"));
-				this.model = rs.getString("car_model");
-				this.power = rs.getInt("power");
-				this.torque = rs.getInt("torque");
-				this.price = rs.getDouble("price");
-				this.topspeed = rs.getInt("topspeed");
-			}
+			rs.first();
+			
+			this.plate_number = rs.getString("plate_number");
+			this.class_id = rs.getInt("class_id");
+			this.car_brand = CarBrand.valueOf(rs.getString("car_brand"));
+			this.model = rs.getString("car_model");
+			this.power = rs.getInt("power");
+			this.torque = rs.getInt("torque");
+			this.price = rs.getDouble("price");
+			this.topspeed = rs.getInt("topspeed");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

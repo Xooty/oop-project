@@ -32,7 +32,7 @@ public class SearchUserFrame extends MainFrame {
 	private User user;
 	
 	public SearchUserFrame() {
-		super(3, Permission.ADMIN, "Benutzer", 350, 550);
+		super(3, Permission.ADMIN, "Benutzer verwalten", 350, 550);
 		
 		this.label_user_name = new JLabel("Benutzername:");
 		this.label_user_name.setBounds(25, 50, 150, 25);

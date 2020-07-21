@@ -1,10 +1,6 @@
 package de.hwrberlin.autovermietung.frames;
 
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,7 +18,7 @@ public class UsersFrame extends MainFrame {
 	private JButton button_search, button_create;
 	
 	public UsersFrame() {
-		super(2, Permission.ADMIN, "Benutzer", 700, 250);
+		super(2, Permission.ADMIN, "Benutzer verwalten", 700, 250);
 		
 		this.button_search = new JButton("Suche");
 		this.button_search.setBounds(50, 50, 250, 100);
@@ -63,10 +59,10 @@ public class UsersFrame extends MainFrame {
         		return;
         	}
         	
-        	if (sql.createUser(user_name.getName(), password.getText(), permission.getSelectedItem().toString())) {
-        		JOptionPane.showMessageDialog(null, "Der User " + user_name + " wurde erfolgreich angelegt.");
+        	if (sql.createUser(user_name.getText(), password.getText(), permission.getSelectedItem().toString())) {
+        		JOptionPane.showMessageDialog(null, "Der User " + user_name.getText() + " wurde erfolgreich angelegt.");
         	} else {
-        		JOptionPane.showMessageDialog(null, "Der User " + user_name + " existiert bereits.");
+        		JOptionPane.showMessageDialog(null, "Der User " + user_name.getText() + " existiert bereits.");
         	}
         }
 	}
