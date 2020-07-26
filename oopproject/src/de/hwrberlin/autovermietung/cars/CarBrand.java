@@ -11,6 +11,7 @@ public enum CarBrand {
 	RENAULT("Renault"),
 	SEAT("Seat"),
 	SKODA("Škoda"),
+	SMART("smart"),
 	VOLKSWAGEN("VW");
 
 	private String name;

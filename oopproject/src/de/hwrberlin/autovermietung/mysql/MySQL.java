@@ -167,7 +167,7 @@ public class MySQL {
 		}
 
 		try {
-			st = connection.prepareStatement("CREATE DATABASE IF NOT EXISTS autovermietung");
+			st = connection.prepareStatement("CREATE DATABASE IF NOT EXISTS " + this.database);
 			st.executeUpdate();
 			st.close();
 			this.closeConnection(connection);
@@ -177,19 +177,19 @@ public class MySQL {
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, plate_number VARCHAR(50), class_id INTEGER, car_brand VARCHAR(50), car_model VARCHAR(50), power INTEGER, torque INTEGER, price DOUBLE, mileage INTEGER, topspeed INTEGER)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars (car_id INTEGER AUTO_INCREMENT PRIMARY KEY, plate_number VARCHAR(50), class_id INTEGER, car_brand VARCHAR(50), car_model VARCHAR(50), fuel_type VARCHAR(20), power INTEGER, torque INTEGER, price DOUBLE, mileage INTEGER, topspeed INTEGER)");
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars_class (class_id INTEGER AUTO_INCREMENT PRIMARY KEY, class_name VARCHAR(10), price DOUBLE)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS cars_class (class_id INTEGER AUTO_INCREMENT PRIMARY KEY, class_name VARCHAR(50), price DOUBLE)");
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS customers (customer_id INTEGER AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(50), surname VARCHAR(50), birth_date VARCHAR(20), country VARCHAR(50), city VARCHAR(50), zip_code VARCHAR(20), street VARCHAR(200), email VARCHAR(200), phone VARCHAR(50))");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS customers (customer_id INTEGER AUTO_INCREMENT PRIMARY KEY, salutation VARCHAR(10), first_name VARCHAR(50), surname VARCHAR(50), birth_date VARCHAR(50), address VARCHAR(500), email VARCHAR(200), phone VARCHAR(50))");
 			st.executeUpdate();
 			st.close();
 			
-			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS contracts (contract_id INTEGER AUTO_INCREMENT PRIMARY KEY, customer_id INTEGER, car_id INTEGER, employee_id INTEGER, contract_start LONG, contract_end LONG)");
+			st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS contracts (contract_id INTEGER AUTO_INCREMENT PRIMARY KEY, customer_id INTEGER, car_id INTEGER, employee_id INTEGER, contract_start LONG, contract_end LONG, mileage_start INTEGER, mileage_end INTEGER, car_returned BOOLEAN)");
 			st.executeUpdate();
 			st.close();
 			
@@ -198,19 +198,11 @@ public class MySQL {
 			
 			if (!rs.first()) {
 				st.close();
-				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('alex', '123', 'ADMIN')");
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('admin', '123', 'ADMIN')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('jassii', '123', 'USER')");
-				st.executeUpdate();
-				st.close();
-				
-				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('marc', '123', 'USER')");
-				st.executeUpdate();
-				st.close();
-				
-				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('niklas', '123', 'USER')");
+				st = connection.prepareStatement("INSERT INTO users (user_name, user_password, permissions) VALUES ('user', '123', 'USER')");
 				st.executeUpdate();
 				st.close();
 			}
@@ -222,19 +214,19 @@ public class MySQL {
 			if (!rs.first()) {
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (1, 'B-GT 123', 'smart', 'fortwo', 52, 160, 21386.9, 0, 155)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, fuel_type, power, torque, price, mileage, topspeed) VALUES (1, 'B-GT 123', 'smart', 'fortwo', 'SUPER', 52, 160, 21386.9, 0, 155)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (2, 'B-GT 124', 'Volkswagen', 'Golf', 66, 175, 19880.8, 0, 188)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, fuel_type, power, torque, price, mileage, topspeed) VALUES (2, 'B-GT 124', 'Volkswagen', 'Golf', 'SUPER_E10', 66, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (3, 'B-GT 125', 'Mercedes-Benz', 'E200', 143, 175, 19880.8, 0, 188)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, fuel_type, power, torque, price, mileage, topspeed) VALUES (3, 'B-GT 125', 'Mercedes-Benz', 'E200', 'SUPER', 143, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, power, torque, price, mileage, topspeed) VALUES (4, 'B-GT 126', 'Volkswagen', 'Touareg', 170, 175, 19880.8, 0, 188)");
+				st = connection.prepareStatement("INSERT INTO cars (class_id, plate_number, car_brand, car_model, fuel_type, power, torque, price, mileage, topspeed) VALUES (4, 'B-GT 126', 'Volkswagen', 'Touareg', 'DIESEL', 170, 175, 19880.8, 0, 188)");
 				st.executeUpdate();
 				st.close();
 			}
@@ -269,33 +261,51 @@ public class MySQL {
 			if (!rs.first()) {
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Max', 'Mustermann', '01.01.1970', 'Deutschland', 'Berlin', '13581', 'Max-Mustermann-Straße 10', 'max.mustermann@example.com', '017591231022')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Max', 'Mustermann', '01.01.1970', 'Deutschland, Berlin, 13581, Max-Mustermann-Straße 10', 'max.mustermann@example.com', '017591231022')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Hans', 'Wurst', '23.05.1980', 'Deutschland', 'München', '80689', 'Hans-Wurst-Weg 2b', 'hans@wurst.de', '017310387234')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Hans', 'Wurst', '23.05.1980', 'Deutschland, München, 80689, Hans-Wurst-Weg 2b', 'hans@wurst.de', '017310387234')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Fridolin', 'Müller', '25.03.1996', 'Deutschland', 'Berlin', '10559', 'Müller-Meier-Schmidt-Straße 61c', 'fridolin@muellerchen.org', '017591231022')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Fridolin', 'Müller', '25.03.1996', 'Deutschland, Berlin, 10559, Müller-Meier-Schmidt-Straße 61c', 'fridolin@muellerchen.org', '017591231022')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Jürgen', 'Meier', '28.07.1977', 'Österreich', 'Wien', '1050', 'Schönbrunner Str. 5', 'meier.guenther@irgendwas.at', '+43-663 14293418')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Jürgen', 'Meier', '28.07.1977', 'Österreich, Wien, 1050, Schönbrunner Str. 5', 'meier.guenther@irgendwas.at', '+43-663 14293418')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Robert', 'Schmitt', '05.12.1950', 'Deutschland', 'Köln', '50667', 'Max-Mustermann-Straße 10', '', '01751534628')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Robert', 'Schmitt', '05.12.1950', 'Deutschland, Köln, 50667, Max-Mustermann-Straße 10', '', '01751534628')");
 				st.executeUpdate();
 				st.close();
 				
-				st = connection.prepareStatement("INSERT INTO customers (first_name, surname, birth_date, country, city, zip_code, street, email, phone) VALUES ('Uwe', 'Schmidt', '01.04.1947', 'Deutschland', 'Berlin', '10115', 'Uwe-Meme-Straße 57', 'ichbinderuwe@ichbinauchdabei.de', '')");
+				st = connection.prepareStatement("INSERT INTO customers (salutation, first_name, surname, birth_date, address, email, phone) VALUES ('Herr', 'Uwe', 'Schmidt', '01.04.1947', 'Deutschland, Berlin, 10115, Uwe-Meme-Straße 57', 'ichbinderuwe@ichbinauchdabei.de', '')");
 				st.executeUpdate();
 				st.close();
 			}
-			rs.close();
+
+			st = connection.prepareStatement("SELECT * FROM contracts");
+			rs = st.executeQuery();
 			
-//			JOptionPane.showMessageDialog(null, "Das Programm hat sich mit der Datenbank verbunden!");
+			if (!rs.first()) {
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO contracts (customer_id, car_id, employee_id, contract_start, contract_end, mileage_start, mileage_end, car_returned) VALUES (1, 2, 2, 1593900000000, 1596146400000, 0, NULL, 0)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO contracts (customer_id, car_id, employee_id, contract_start, contract_end, mileage_start, mileage_end, car_returned) VALUES (3, 3, 1, 1596232800000, 1596405600000, 0, NULL, 0)");
+				st.executeUpdate();
+				st.close();
+				
+				st = connection.prepareStatement("INSERT INTO contracts (customer_id, car_id, employee_id, contract_start, contract_end, mileage_start, mileage_end, car_returned) VALUES (2, 1, 1, 1604790000000, 1605394800000, 0, NULL, 0)");
+				st.executeUpdate();
+				st.close();
+			}
+			
+			JOptionPane.showMessageDialog(null, "Das Programm hat sich mit der Datenbank verbunden!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -334,5 +344,47 @@ public class MySQL {
     		sql.closeRessources(rs, st, connection);
     	}
     	return false;
+	}
+	
+	public User searchUser(String user_name) {
+		MySQL sql = Main.getMySQL();
+		Connection connection = sql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM users WHERE user_name = ?");
+			st.setString(1, user_name);
+			rs = st.executeQuery();
+			
+			if (rs.first()) {
+				return new User(rs.getInt("user_id"), connection);
+			} else {
+				JOptionPane.showMessageDialog(null, "Dieser Benutzername existiert nicht.");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			sql.closeRessources(rs, st, connection);
+		}
+		return null;
+	}
+	
+	public void deleteUser(User user) {
+		MySQL sql = Main.getMySQL();
+		Connection connection = sql.openConnection();
+		PreparedStatement st = null;
+		
+		try {
+			st = connection.prepareStatement("DELETE FROM users WHERE user_id = ? AND user_name = ?");
+			st.setInt(1, user.getUserID());
+			st.setString(2, user.getUserName());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			sql.closeRessources(null, st, connection);
+		}
 	}
 }

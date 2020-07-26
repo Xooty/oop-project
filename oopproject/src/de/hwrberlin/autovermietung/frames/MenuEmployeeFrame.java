@@ -12,9 +12,8 @@ import javax.swing.SwingConstants;
 
 import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.other.RoundedBorder;
-import de.hwrberlin.autovermietung.users.Permission;
 
-public class EmployeeMenuFrame extends MainFrame {
+public class MenuEmployeeFrame extends MainFrame {
 
 	private static final long serialVersionUID = -6463793055912864893L;
 
@@ -22,8 +21,8 @@ public class EmployeeMenuFrame extends MainFrame {
 	
 	private JLabel label_employee, label_border_main;
 	
-	public EmployeeMenuFrame() {
-		super(101, Permission.USER, "Menü für Mitarbeiter", 675, 475);
+	public MenuEmployeeFrame() {
+		super(101, "Menü für Mitarbeiter", 675, 490);
 		
 		this.getContentPane().setBackground(Color.WHITE);
 		
@@ -92,8 +91,7 @@ public class EmployeeMenuFrame extends MainFrame {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == this.button_cars) {
-			CarsFrame cars_frame = (CarsFrame) Main.getFrameManager().openFrameByID(107);
-			cars_frame.setup();
+			Main.getFrameManager().openFrameByID(107);
 		} else if (event.getSource() == this.button_customer) {
 			Main.getFrameManager().openFrameByID(104);
 		} else if (event.getSource() == this.button_contracts) {

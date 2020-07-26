@@ -5,15 +5,18 @@ import java.util.List;
 
 import de.hwrberlin.autovermietung.frames.CalendarFrame;
 import de.hwrberlin.autovermietung.frames.CarFrame;
-import de.hwrberlin.autovermietung.frames.CarsFrame;
+import de.hwrberlin.autovermietung.frames.CarReturnFrame;
+import de.hwrberlin.autovermietung.frames.CarsAdminFrame;
+import de.hwrberlin.autovermietung.frames.CarsEmployeeFrame;
+import de.hwrberlin.autovermietung.frames.ContractCreateFrame;
 import de.hwrberlin.autovermietung.frames.ContractFrame;
+import de.hwrberlin.autovermietung.frames.ContractSearchFrame;
 import de.hwrberlin.autovermietung.frames.CustomersFrame;
-import de.hwrberlin.autovermietung.frames.EmployeeMenuFrame;
-import de.hwrberlin.autovermietung.frames.InputFrame;
 import de.hwrberlin.autovermietung.frames.LoginFrame;
 import de.hwrberlin.autovermietung.frames.MainFrame;
-import de.hwrberlin.autovermietung.frames.MenuFrame;
-import de.hwrberlin.autovermietung.frames.SearchUserFrame;
+import de.hwrberlin.autovermietung.frames.MenuAdminFrame;
+import de.hwrberlin.autovermietung.frames.MenuEmployeeFrame;
+import de.hwrberlin.autovermietung.frames.UserSearchFrame;
 import de.hwrberlin.autovermietung.frames.UsersFrame;
 
 public class FrameManager {
@@ -60,7 +63,6 @@ public class FrameManager {
 			this.current_frame.setVisible(false);
 			this.setCurrentFrame(frame);
 			frame.setVisible(true);
-			if (id != 0) frame.setMenuBar();
 			return frame;
 		}
 		return null;
@@ -69,16 +71,30 @@ public class FrameManager {
 	public void setupFrames() {
 		this.frames.clear();						// ID
 		this.addFrame(new LoginFrame());			// 0
-		this.addFrame(new MenuFrame());				// 1
-		this.addFrame(new UsersFrame());			// 2
-		this.addFrame(new SearchUserFrame());		// 3
 		
-		this.addFrame(new EmployeeMenuFrame());		// 101
+		this.addFrame(new MenuAdminFrame());		// 1
+		this.addFrame(new UsersFrame());			// 2
+		this.addFrame(new UserSearchFrame());		// 3
+		this.addFrame(new CarsAdminFrame());		// 4
+		
+		this.addFrame(new MenuEmployeeFrame());		// 101
 		this.addFrame(new CarFrame());				// 102
-		this.addFrame(new InputFrame());			// 103
+		this.addFrame(new ContractSearchFrame());	// 103
 		this.addFrame(new CustomersFrame());		// 104
 		this.addFrame(new ContractFrame());			// 105
 		this.addFrame(new CalendarFrame()); 		// 106
-		this.addFrame(new CarsFrame());				// 107
+		this.addFrame(new CarsEmployeeFrame());		// 107
+		this.addFrame(new ContractCreateFrame());	// 108
+		this.addFrame(new CarReturnFrame());		// 109
+		
+		for (MainFrame frame : this.frames) {
+			if (frame.getID() != 0) frame.setMenuBar();
+		}
+	}
+	
+	public void setupInfoLabels() {
+		for (MainFrame frame : this.frames) {
+			if (frame.getID() != 0) frame.setInfoLabel();
+		} 
 	}
 }

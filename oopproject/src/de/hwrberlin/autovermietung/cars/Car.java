@@ -9,7 +9,6 @@ import java.util.List;
 
 import de.hwrberlin.autovermietung.Main;
 import de.hwrberlin.autovermietung.contract.Contract;
-import de.hwrberlin.autovermietung.customers.Customer;
 import de.hwrberlin.autovermietung.mysql.MySQL;
 
 public class Car {
@@ -18,52 +17,120 @@ public class Car {
 	
 	private String plate_number;
 	
-	private int class_id;
+	private int car_class;
 	
 	private CarBrand car_brand;
 	
 	private String model;
 	
-	private CarType car_type;
-	
-	private String id;
-	
 	private double price;
 	
-	private long mileage;
-	
+	private int mileage;
 	private int power;
 	private int torque;
 	private int topspeed;
 	
-	private int fuel;
 	private FuelType fuel_type;
 	
 	private List<String> damages;
-	
-	private Customer current_customer;
-	private List<Customer> previous_customers;
 	
 	private boolean occupied;
 	
 	private List<Contract> contracts;
 	
-	public Car() {
-		this.damages = new ArrayList<String>();
-		
-		this.current_customer = null;
-		this.previous_customers = new ArrayList<Customer>();
+	public Car(String plate_number, int class_id, String car_brand, String car_model, String fuel_type, int power, int torque, double price, int mileage, int topspeed) {
 		
 		this.occupied = false;
-		
 		this.contracts = new ArrayList<Contract>();
-	}
-	
-	public Car(int car_id) {
-		this.car_id = car_id;
+		
+		this.plate_number = plate_number;
+		this.car_class = class_id;
+		this.car_brand = CarBrand.valueOf(car_brand);
+		this.model = car_model;
+		this.fuel_type = FuelType.valueOf(fuel_type);
+		this.power = power;
+		this.torque = torque;
+		this.price = price;
+		this.mileage = mileage;
+		this.topspeed = topspeed;
 		
 		MySQL sql = Main.getMySQL();
 		Connection connection = sql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("INSERT INTO cars (plate_number, class_id, car_brand, car_model, fuel_type, power, torque, price, mileage, topspeed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			st.setString(1, this.plate_number);
+			st.setInt(2, this.car_class);
+			st.setString(3, this.car_brand.getName());
+			st.setString(4, this.model);
+			st.setString(5, this.fuel_type.toString());
+			st.setInt(6, this.power);
+			st.setInt(7, this.torque);
+			st.setDouble(8, this.price);
+			st.setInt(9, this.mileage);
+			st.setInt(10, this.topspeed);
+			
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			sql.closeRessources(rs, st, connection);
+		}
+	}
+	
+	public Car(String plate_number, Connection connection) {
+		this.plate_number = plate_number;
+		
+		this.contracts = new ArrayList<Contract>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM cars WHERE plate_number = ?");
+			st.setString(1, this.plate_number);
+			
+			rs = st.executeQuery();
+			
+			rs.first();
+			
+			this.car_id = rs.getInt("car_id");
+			this.car_class = rs.getInt("class_id");
+			this.car_brand = CarBrand.valueOf(rs.getString("car_brand").toUpperCase().replace("-", "_"));
+			this.model = rs.getString("car_model");
+			this.fuel_type = FuelType.valueOf(rs.getString("fuel_type"));
+			this.power = rs.getInt("power");
+			this.torque = rs.getInt("torque");
+			this.price = rs.getDouble("price");
+			this.mileage = rs.getInt("mileage");
+			this.topspeed = rs.getInt("topspeed");
+			
+			rs.close();
+			st.close();
+			
+			st = connection.prepareStatement("SELECT * FROM contracts WHERE car_id = ? AND car_returned = FALSE");
+			st.setInt(1, this.car_id);
+			
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				if (System.currentTimeMillis() < rs.getLong("contract_end") && System.currentTimeMillis() > rs.getLong("contract_start")) {
+					this.occupied = true;
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Car(int car_id, Connection connection) {
+		this.car_id = car_id;
+		
+		this.contracts = new ArrayList<Contract>();
+		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
@@ -76,17 +143,32 @@ public class Car {
 			rs.first();
 			
 			this.plate_number = rs.getString("plate_number");
-			this.class_id = rs.getInt("class_id");
-			this.car_brand = CarBrand.valueOf(rs.getString("car_brand"));
+			this.car_class = rs.getInt("class_id");
+			this.car_brand = CarBrand.valueOf(rs.getString("car_brand").toUpperCase().replace("-", "_"));
 			this.model = rs.getString("car_model");
+			this.fuel_type = FuelType.valueOf(rs.getString("fuel_type"));
 			this.power = rs.getInt("power");
 			this.torque = rs.getInt("torque");
 			this.price = rs.getDouble("price");
+			this.mileage = rs.getInt("mileage");
 			this.topspeed = rs.getInt("topspeed");
+			
+			rs.close();
+			st.close();
+			
+			st = connection.prepareStatement("SELECT * FROM contracts WHERE car_id = ? AND car_returned = FALSE");
+			st.setInt(1, this.car_id);
+			
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				if (System.currentTimeMillis() < rs.getLong("contract_end") && System.currentTimeMillis() > rs.getLong("contract_start")) {
+					this.occupied = true;
+					break;
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			sql.closeRessources(rs, st, connection);
 		}
 	}
 	
@@ -98,12 +180,12 @@ public class Car {
 		return this.plate_number;
 	}
 	
-	public int getClassID() {
-		return this.class_id;
+	public int getCarClass() {
+		return this.car_class;
 	}
 	
-	public void setClassID(int class_id) {
-		this.class_id = class_id;
+	public void setCarClass(int car_class) {
+		this.car_class = car_class;
 	}
 	
 	public CarBrand getCarBrand() {
@@ -121,24 +203,7 @@ public class Car {
 	public void setModel(String model) {
 		this.model = model;
 	}
-	
-	public CarType getCarType() {
-		return this.car_type;
-	}
-	
-	public Car setCarType(CarType car_type) {
-		this.car_type = car_type;
-		return this;
-	}
-	
-	public String getID() {
-		return this.id;
-	}
-	
-	public void setID(String id) {
-		this.id = id;
-	}
-	
+
 	public int getHorsepower() {
 		return this.power;
 	}
@@ -163,14 +228,6 @@ public class Car {
 		this.topspeed = topspeed;
 	}
 	
-	public int getFuel() {
-		return this.fuel;
-	}
-	
-	public void setFuel(int fuel) {
-		this.fuel = fuel;
-	}
-	
 	public FuelType getFuelType() {
 		return this.fuel_type;
 	}
@@ -187,15 +244,31 @@ public class Car {
 		this.price = price;
 	}
 	
-	public long getMileage() {
+	public int getMileage() {
 		return this.mileage;
 	}
 	
-	public void setMileage(long mileage) {
+	public void setMileage(int mileage) {
 		this.mileage = mileage;
+		
+		MySQL sql = Main.getMySQL();
+		Connection connection = sql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("UPDATE cars SET mileage = ? WHERE car_id = ?");
+			st.setInt(1, this.mileage);
+			st.setInt(2, this.car_id);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			sql.closeRessources(rs, st, connection);
+		}
 	}
 	
-	public void addMileage(long mileage) {
+	public void addMileage(int mileage) {
 		this.mileage += mileage;
 	}
 	
@@ -213,26 +286,6 @@ public class Car {
 	
 	public void removeDamage(String damage) {
 		this.damages.remove(damage);
-	}
-	
-	public Customer getCurrentCustomer() {
-		return this.current_customer;
-	}
-	
-	public void setCurrentCustomer(Customer current_customer) {
-		this.current_customer = current_customer;
-	}
-	
-	public List<Customer> getPreviousCustomers() {
-		return this.previous_customers;
-	}
-	
-	public void addPreviousCustomer(Customer customer) {
-		this.previous_customers.add(customer);
-	}
-	
-	public void removePreviousCustomer(Customer customer) {
-		this.previous_customers.remove(customer);
 	}
 	
 	public boolean isOccupied() {
@@ -257,5 +310,31 @@ public class Car {
 	
 	public void removeContract(Contract contract) {
 		this.contracts.remove(contract);
+	}
+	
+	public void loadContracts() {
+		MySQL sql = Main.getMySQL();
+		Connection connection = sql.openConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT contract_id FROM contracts WHERE car_id = ?");
+			st.setInt(1, this.car_id);
+			
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				this.addContract(new Contract(rs.getInt("contract_id"), connection));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			sql.closeRessources(rs, st, connection);
+		}
+		
+		for (Contract contract : this.contracts) {
+			if (System.currentTimeMillis() > contract.getContractEnd() && contract.isCarReturned()) this.contracts.remove(contract);
+		}
 	}
 }

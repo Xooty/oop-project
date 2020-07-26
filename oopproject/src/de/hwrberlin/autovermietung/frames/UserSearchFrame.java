@@ -1,10 +1,6 @@
 package de.hwrberlin.autovermietung.frames;
 
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,11 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import de.hwrberlin.autovermietung.Main;
-import de.hwrberlin.autovermietung.mysql.MySQL;
 import de.hwrberlin.autovermietung.users.Permission;
 import de.hwrberlin.autovermietung.users.User;
 
-public class SearchUserFrame extends MainFrame {
+public class UserSearchFrame extends MainFrame {
 
 	private static final long serialVersionUID = 3149582527679213002L;
 
@@ -27,12 +22,12 @@ public class SearchUserFrame extends MainFrame {
 	
 	private JComboBox<Object> combobox_permission;
 	
-	private JButton button_search, button_delete, button_save;
+	private JButton button_back, button_search, button_delete, button_save;
 	
 	private User user;
 	
-	public SearchUserFrame() {
-		super(3, Permission.ADMIN, "Benutzer verwalten", 350, 550);
+	public UserSearchFrame() {
+		super(3, "Benutzer bearbeiten & suchen", 350, 600);
 		
 		this.label_user_name = new JLabel("Benutzername:");
 		this.label_user_name.setBounds(25, 50, 150, 25);
@@ -41,7 +36,7 @@ public class SearchUserFrame extends MainFrame {
 		this.textfield_user_name.setBounds(150, 50, 175, 25);
 		
 		this.button_search = new JButton("Suchen");
-		this.button_search.setBounds(25, 100, 298, 50);
+		this.button_search.setBounds(25, 100, 300, 50);
 		this.button_search.addActionListener(this);
 		
 		this.label_user_id = new JLabel("Benutzer-ID: Keine Suche gestartet");
@@ -71,15 +66,17 @@ public class SearchUserFrame extends MainFrame {
 		this.button_delete.addActionListener(this);
 		
 		this.button_save = new JButton("Speichern");
-		this.button_save.setBounds(200, 400, 100, 50);
+		this.button_save.setBounds(225, 400, 100, 50);
 		this.button_save.addActionListener(this);
+		
+		this.button_back = new JButton("Zurück");
+		this.button_back.setBounds(25, 475, 300, 50);
+		this.button_back.addActionListener(this);
 		
 		this.getContentPane().add(this.label_user_name);
 		this.getContentPane().add(this.textfield_user_name);
 		this.getContentPane().add(this.button_search);
 		this.getContentPane().add(this.label_user_id);
-		this.getContentPane().add(this.label_new_user_name);
-		this.getContentPane().add(this.textfield_new_user_name);
 		this.getContentPane().add(this.label_new_user_name);
 		this.getContentPane().add(this.textfield_new_user_name);
 		this.getContentPane().add(this.label_new_password);
@@ -88,6 +85,7 @@ public class SearchUserFrame extends MainFrame {
 		this.getContentPane().add(this.combobox_permission);
 		this.getContentPane().add(this.button_delete);
 		this.getContentPane().add(this.button_save);
+		this.getContentPane().add(this.button_back);
 	}
 
 	@Override
@@ -96,7 +94,7 @@ public class SearchUserFrame extends MainFrame {
 			if (this.textfield_user_name.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Sie müssen einen Benutzernamen eingeben.");
 			} else {
-				this.user = this.searchUser(this.textfield_user_name.getText());
+				this.user = Main.getMySQL().searchUser(this.textfield_user_name.getText());
 				if (this.user != null) {
 					this.label_user_id.setText("Benutzer-ID: " + this.user.getUserID());
 					this.textfield_new_user_name.setText(this.user.getUserName());
@@ -108,7 +106,7 @@ public class SearchUserFrame extends MainFrame {
 			if (this.user == null) {
 				JOptionPane.showMessageDialog(null, "Sie haben noch keinen Benutzer gesucht.");
 			} else {
-				this.deleteUser(this.user);
+				Main.getMySQL().deleteUser(this.user);
 				JOptionPane.showMessageDialog(null, "Sie haben den Benutzer erfolgreich gelöscht.");
 			}
 		} else if (event.getSource() == this.button_save) {
@@ -119,48 +117,17 @@ public class SearchUserFrame extends MainFrame {
 				this.user.updateUser(this.textfield_new_user_name.getText(), this.textfield_new_password.getText(), Permission.valueOf(this.combobox_permission.getSelectedItem().toString()));
 				JOptionPane.showMessageDialog(null, "Sie haben den Benutzer erfolgreich bearbeitet.");
 			}
+		} else if (event.getSource() == this.button_back) {
+			Main.getFrameManager().openFrameByID(2);
+			this.resetTexts();
 		}
 	}
 	
-	public User searchUser(String user_name) {
-		MySQL sql = Main.getMySQL();
-		Connection connection = sql.openConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			st = connection.prepareStatement("SELECT * FROM users WHERE user_name = ?");
-			st.setString(1, user_name);
-			rs = st.executeQuery();
-			
-			if (rs.first()) {
-				return new User(rs.getInt("user_id"));
-			} else {
-				JOptionPane.showMessageDialog(null, "Dieser Benutzername existiert nicht.");
-				return null;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			sql.closeRessources(rs, st, connection);
-		}
-		return null;
-	}
-	
-	public void deleteUser(User user) {
-		MySQL sql = Main.getMySQL();
-		Connection connection = sql.openConnection();
-		PreparedStatement st = null;
-		
-		try {
-			st = connection.prepareStatement("DELETE FROM users WHERE user_id = ? AND user_name = ?");
-			st.setInt(1, user.getUserID());
-			st.setString(2, user.getUserName());
-			st.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			sql.closeRessources(null, st, connection);
-		}
+	public void resetTexts() {
+		this.textfield_user_name.setText("");
+		this.label_user_id.setText("Benutzer-ID: Keine Suche gestartet");
+		this.textfield_new_user_name.setText("Keine Suche gestartet");
+		this.textfield_new_password.setText("Keine Suche gestartet");
+		this.combobox_permission.setSelectedIndex(0);
 	}
 }

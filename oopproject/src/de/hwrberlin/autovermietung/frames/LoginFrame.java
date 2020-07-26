@@ -40,7 +40,7 @@ public class LoginFrame extends MainFrame {
 	private JLabel label_border_main, label_border_user, label_border_password;
 	
 	public LoginFrame() {
-		super(0, Permission.USER, "Login", 375, 600);
+		super(0, "Login", 375, 600);
 		
 		this.getContentPane().setBackground(Color.WHITE);
 
@@ -123,7 +123,7 @@ public class LoginFrame extends MainFrame {
 			rs = st.executeQuery();
 			
 			if (rs.first()) {
-				return mysql.setUser(new User(rs.getInt("user_id")));
+				return mysql.setUser(new User(rs.getInt("user_id"), connection));
 			} else {
 				return null;
 			}
@@ -158,29 +158,10 @@ public class LoginFrame extends MainFrame {
 				} else {
 					Main.getFrameManager().openFrameByID(101);
 				}
+				Main.getFrameManager().setupInfoLabels();
 			} else {
 				JOptionPane.showMessageDialog(null, "Der Benutzername oder das Passwort stimmen nicht. Bitte überprüfen Sie die Schreibweise.");
 			}
 		}
 	}
-//	class ImagePanel extends JComponent {
-//
-//		private static final long serialVersionUID = -7108340505337167138L;
-//		
-//		private Image image;
-//		
-//	    public ImagePanel() {
-//	        try {
-//				this.image = ImageIO.read(new File("res/background_login.png"));
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			};
-//	    }
-//	    
-//	    @Override
-//	    protected void paintComponent(Graphics g) {
-//	        super.paintComponent(g);
-//	        g.drawImage(image, 20, 30, this.getWidth() - 30, this.getHeight() - 60, this);
-//	    }
-//	}
 }

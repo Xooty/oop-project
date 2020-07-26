@@ -15,12 +15,12 @@ public class UsersFrame extends MainFrame {
 
 	private static final long serialVersionUID = -3723162624844422083L;
 
-	private JButton button_search, button_create;
+	private JButton button_search, button_create, button_back;
 	
 	public UsersFrame() {
-		super(2, Permission.ADMIN, "Benutzer verwalten", 700, 250);
+		super(2, "Benutzer verwalten", 700, 300);
 		
-		this.button_search = new JButton("Suche");
+		this.button_search = new JButton("Bearbeiten & Suchen");
 		this.button_search.setBounds(50, 50, 250, 100);
 		this.button_search.addActionListener(this);
 		
@@ -28,8 +28,13 @@ public class UsersFrame extends MainFrame {
 		this.button_create.setBounds(400, 50, 250, 100);
 		this.button_create.addActionListener(this);
 		
+		this.button_back = new JButton("Zurück");
+		this.button_back.setBounds(250, 175, 200, 50);
+		this.button_back.addActionListener(this);
+		
 		this.getContentPane().add(this.button_search);
 		this.getContentPane().add(this.button_create);
+		this.getContentPane().add(this.button_back);
 	}
 
 	@Override
@@ -38,6 +43,8 @@ public class UsersFrame extends MainFrame {
 			Main.getFrameManager().openFrameByID(3);
 		} else if (event.getSource() == this.button_create) {
 			this.openUserCreate();
+		} else if (event.getSource() == this.button_back) {
+			Main.getFrameManager().openFrameByID(1);
 		}
 	}
 	

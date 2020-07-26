@@ -16,11 +16,9 @@ public class User {
 	
 	private Permission permission;
 	
-	public User(int user_id) {
+	public User(int user_id, Connection connection) {
 		this.user_id = user_id;
-		
-		MySQL mysql = Main.getMySQL();
-		Connection connection = mysql.openConnection();
+
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
@@ -38,10 +36,6 @@ public class User {
 		} catch (NullPointerException | SQLException e) {
 			System.err.println("Der User konnte nicht geladen werden.");
 			e.printStackTrace();
-			mysql.closeRessources(rs, st, connection);
-			return;
-		} finally {
-			mysql.closeRessources(rs, st, connection);
 		}
 	}
 	

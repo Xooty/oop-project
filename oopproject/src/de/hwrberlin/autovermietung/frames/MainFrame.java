@@ -7,14 +7,13 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import de.hwrberlin.autovermietung.Main;
-import de.hwrberlin.autovermietung.listeners.MenuActionListener;
-import de.hwrberlin.autovermietung.users.Permission;
 
 public abstract class MainFrame extends JFrame implements ActionListener {
 
@@ -22,15 +21,13 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 
 	private int id;
 	
-	private Permission permission;
-
 	private JMenuBar menubar_main;
 	
-	public MainFrame(int id, Permission permission, String title, int width, int height) {
+	private JLabel label_info;
+	
+	public MainFrame(int id, String title, int width, int height) {
 		this.id = id;
 		
-		this.permission = permission;
-
 		this.setTitle(title);
 		
 		this.setVisible(false);
@@ -48,12 +45,15 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		return this.id;
 	}
 	
-	public Permission getPermission() {
-		return this.permission;
-	}
-	
 	public Dimension getRealSize() {
 		return new Dimension(this.getContentPane().getWidth(), this.getContentPane().getHeight());
+	}
+	
+	public void setInfoLabel() {
+		this.label_info = new JLabel("CarControl | Eingeloggt als: " + Main.getMySQL().getUser().getUserName());
+		this.label_info.setBounds(this.getContentPane().getWidth() - 250, this.getContentPane().getHeight() - 25, 275, 25);
+		
+		this.getContentPane().add(this.label_info);
 	}
 
 	public void setMenuBar() {
@@ -83,33 +83,12 @@ public abstract class MainFrame extends JFrame implements ActionListener {
 		menu_item_close.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-//				for (MainFrame frame : Main.getFrameManager().getFrames()) {
-//					frame.dispose();
-//				}
 				System.exit(0);
 			}
 		});
 		first_menu.add(menu_item_close);
 		
 		this.menubar_main.add(first_menu);
-		
-		JMenu menu = new JMenu("Navigation");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription("Text");
-		
-		for (MainFrame frame : Main.getFrameManager().getFrames()) {
-			if (frame.getID() == 0 || frame.getID() == this.id || frame.getID() == 102) continue;
-			if (Main.getMySQL().getUser().hasPermission(frame.getPermission())) {
-				JMenuItem item = new JMenuItem(frame.getTitle() + " anzeigen");
-				item.addActionListener(new MenuActionListener());
-				menu.add(item);
-			}
-		}
-		
-//		JMenuItem item_contract = new JMenuItem("Aufträge anzeigen");
-//		menu.add(item_contract);
-		
-		this.menubar_main.add(menu);
 		
 		this.setJMenuBar(this.menubar_main);
 	}
